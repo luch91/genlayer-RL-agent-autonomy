@@ -51,11 +51,11 @@ Each is a **fully independent, forkable repository**. All four are deployed and 
 
 ## How this repository is organized
 
-This repository is the umbrella repository. It holds the shared engineering spec, the organization profile, and the release notes. It coordinates the four domain repositories. It does not contain the RL code.
+This repository is the umbrella index for the suite. It holds the shared engineering spec, the organization profile, and the release notes. It coordinates the four domain repositories.
 
-This repository has no `contracts/`, `agent/`, or `tests/` folder. This is correct by design. There is no single domain here for that code to belong to. To put that code here would break the design.
+This repository also vendors the four deployed Intelligent Contracts under `contracts/`. Each file is the exact source that runs on the GenLayer Studio network. See `contracts/README.md` for the deployed address, the explorer link, and the canonical source repository of each contract.
 
-The RL system lives in the four domain repositories. Each domain repository is independent. Each domain repository contains its own code:
+The full RL system lives in the four domain repositories. Each domain repository is independent. Each domain repository contains its own code:
 
 - `contracts/` holds the Intelligent Contract. The contract defines the state, the actions, and the LLM-consensus reward.
 - `agent/` holds the off-chain Q-learning agent. The agent reads the state, sends actions, and learns from the reward.
@@ -63,7 +63,7 @@ The RL system lives in the four domain repositories. Each domain repository is i
 
 The demo suite is a separate repository. It reads the `manifest.json` file that each domain repository publishes. It does not hold RL code.
 
-Each part has a clear job. This repository documents and coordinates. The four domain repositories implement. The demo suite shows the results.
+Each part has a clear job. This repository indexes the suite and mirrors the deployed contracts. The four domain repositories implement. The demo suite shows the results.
 
 ## Why GenLayer specifically
 
