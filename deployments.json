@@ -1,0 +1,23 @@
+{
+  "chain": "studionet",
+  "rpc": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com",
+  "contracts": {
+    "crisis": {
+      "name": "Crisis Negotiator",
+      "address": "0x9d718F8AAb76517D14917483e1c9Cbd6267aDe24"
+    },
+    "immunologist": {
+      "name": "Protocol Immunologist",
+      "address": "0xC23006cAF6D3b25288F77988592675Bd5439Ed35"
+    },
+    "heretic": {
+      "name": "Scientific Heretic",
+      "address": "0x7847A35eA8C3Bb887C20E5B64BF035e99abd4B16"
+    },
+    "interpreter": {
+      "name": "Diplomatic Interpreter",
+      "address": "0xA47132D18B0eD7588426B6234f74d4A15170a4e0"
+    }
+  }
+}

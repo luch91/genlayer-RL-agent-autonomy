@@ -1,0 +1,17 @@
+[project]
+name = "genlayer-rl-agent-autonomy"
+version = "0.2.0"
+description = "Four self-contained tabular RL agents trained by GenLayer LLM-consensus rewards"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+chain = ["genlayer-py"]
+test = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100

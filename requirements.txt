@@ -1,0 +1,5 @@
+pytest>=8.0
+
+# Required only for --env genlayer.
+genlayer-py>=0.2.9
+genlayer-test>=0.2.9
