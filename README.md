@@ -153,6 +153,13 @@ python scripts/export_manifests.py
 Mock replay steps are marked `illustrative` and contain no fabricated
 transaction hashes, validator votes, or live receipts.
 
+One live verification was run against the fresh crisis deployment on Studionet:
+transaction `0xa0e7c9799b29fa1ea51be5e52846eaf80dd9ffa1663d7f465e49ece48a9be5c6`
+was accepted by validator consensus. The deployed contract then reported state `2`,
+step count `2`, reward `0`, and `is_terminal = false`. This is a verification record,
+not a fabricated dashboard replay; the dashboard continues to label its local replay
+steps as mock-only.
+
 ## Contributing
 
 Issues and Discussions are open on each domain repo. Pick a domain, read its `README.md` and `docs/tutorial.md`, claim an issue, and open a PR under [Conventional Commits](https://www.conventionalcommits.org/). CI must pass, and PRs touching the agent should include a short training-log snippet showing the curve.
