@@ -12,9 +12,9 @@ Framed honestly: this is subjective-reward RL on-chain (RLAIF, judged by validat
 
 ## Live dashboard
 
-All four agents are visualized in one place: **[the GenLayer RL Demo Suite](https://luch91-org.github.io/genlayer-rl-demo-suite/)**. It is a pure reader of each agent's published `manifest.json` - watch the reward climb over training, step through a recorded episode, read the on-chain judge's verdict for each step, inspect why the agent chose each action, and read the deployed contract's live state. Source and setup: [`genlayer-rl-demo-suite`](https://github.com/luch91-org/genlayer-rl-demo-suite).
+All four agents are visualized in one place: **[the GenLayer RL Demo Suite](https://luch91.github.io/genlayer-rl-demo-suite/)**. It is a pure reader of each agent's published `manifest.json` - watch the reward climb over training, step through a recorded episode, read the on-chain judge's verdict for each step, inspect why the agent chose each action, and read the deployed contract's live state. Source and setup: [`genlayer-rl-demo-suite`](https://github.com/luch91/genlayer-rl-demo-suite).
 
-![The instrument panel replaying a trained crisis-response episode: the world state, the on-chain judge score, the step timeline, and the policy inspector all advance together, step by step.](https://raw.githubusercontent.com/luch91-org/genlayer-rl-demo-suite/main/docs/instrument-panel.gif)
+![The instrument panel replaying a trained crisis-response episode: the world state, the on-chain judge score, the step timeline, and the policy inspector all advance together, step by step.](https://raw.githubusercontent.com/luch91/genlayer-rl-demo-suite/main/docs/instrument-panel.gif)
 
 *Recorded from the live dashboard: the instrument panel stepping through a trained crisis-response rollout. Each step updates the world state, the judge's score, the reward chip, and the policy inspector that explains why the agent chose that action.*
 
@@ -44,10 +44,10 @@ are deployed and verified live on the hosted GenLayer Studio network
 
 | Contract | Domain | The agent learns to | Verified Studionet address |
 |---|---|---|---|
-| [`contracts/crisis_negotiator.py`](contracts/crisis_negotiator.py) | Disaster response | Dispatch drones, ambulances, and supplies to critical zones without wasting capacity | `0x9d718F8AAb76517D14917483e1c9Cbd6267aDe24` |
-| [`contracts/protocol_immunologist.py`](contracts/protocol_immunologist.py) | DAO treasury defense | Pause, rotate signers, and hedge to preserve capital - but only when a threat is actually trending | `0xC23006cAF6D3b25288F77988592675Bd5439Ed35` |
-| [`contracts/scientific_heretic.py`](contracts/scientific_heretic.py) | Hypothesis generation | Propose novel, falsifiable, plausible hypotheses a peer reviewer would find interesting | `0x7847A35eA8C3Bb887C20E5B64BF035e99abd4B16` |
-| [`contracts/diplomatic_interpreter.py`](contracts/diplomatic_interpreter.py) | Cross-community mediation | Draft compromises that lower polarization and raise the odds of agreement on both sides | `0xA47132D18B0eD7588426B6234f74d4A15170a4e0` |
+| [`contracts/crisis_negotiator.py`](contracts/crisis_negotiator.py) | Disaster response | Dispatch drones, ambulances, and supplies to critical zones without wasting capacity | `0x6DF8D7adDc796C9AA3Af4f42478C2D819B569381` |
+| [`contracts/protocol_immunologist.py`](contracts/protocol_immunologist.py) | DAO treasury defense | Pause, rotate signers, and hedge to preserve capital - but only when a threat is actually trending | `0x71D85CdF6FB3A268AB4B7Fafbba1F643c145Ef26` |
+| [`contracts/scientific_heretic.py`](contracts/scientific_heretic.py) | Hypothesis generation | Propose novel, falsifiable, plausible hypotheses a peer reviewer would find interesting | `0xB831B9D4FFEC63B71985F87CEd3aCDCAF5965be8` |
+| [`contracts/diplomatic_interpreter.py`](contracts/diplomatic_interpreter.py) | Cross-community mediation | Draft compromises that lower polarization and raise the odds of agreement on both sides | `0x7c87A683c2506EF8772aC314DcfEF7B4AF7c092D` |
 
 > Studio is a shared sandbox that can be reset. If an address stops resolving,
 > redeploy the corresponding contract with `genlayer deploy --contract
@@ -115,17 +115,33 @@ python -m agent.train --domain crisis-negotiator --env mock --episodes 500
 python -m agent.train --domain crisis-negotiator --env mock --resume policies/crisis-negotiator-q_table.json --episodes 50
 ```
 
-Then run the same agent against a deployed contract:
+Then run the same agent against a deployed contract. The contract owns the fixed
+problem definition and the reward; the SDK reads that definition before training,
+writes only the chosen action, waits for finality, reads the resulting on-chain
+reward/state, and the agent immediately applies the Q update. A live deployment is
+one fixed eight-step episode because the contract deliberately has no agent-controlled
+reset or mutable objective:
 
 ```bash
 pip install -e '.[chain]'
-python -m agent.train --domain crisis-negotiator --env genlayer --address 0x... --episodes 3
+python -m agent.train --domain crisis-negotiator --env genlayer --address 0x... --episodes 1 --q-table live-q-table.json
 ```
 
 The live adapter reads `get_state`, submits `take_action` through
-`genlayer-py`, waits for the receipt, reads `get_last_reward`, and reads the
-next state. Repeat `--domain` for the other three domains. No Node bridge is
-required.
+`genlayer-py`, waits for the receipt, reads `get_last_reward` and the resulting
+state/terminal metadata, and then the Q-learning loop consumes that reward. It does
+not accept a reward supplied by the agent. The public interface is:
+
+```text
+get_problem_definition() → fixed objective text
+get_state() → current state bucket
+take_action(action) → contract-judged reward
+get_last_reward() → persisted reward from that action
+get_step_count(), is_terminal() → episode progress
+```
+
+The mock path uses the same interface and is the safe default for development.
+Repeat `--domain` for the other three domains. No Node bridge is required.
 
 Export or refresh the truthful dashboard manifests after training or a new
 deployment:
