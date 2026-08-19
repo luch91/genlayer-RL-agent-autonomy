@@ -8,16 +8,16 @@
     "world": "Protocol security"
   },
   "provenance": {
-    "repo": "https://github.com/luch91-org/genlayer-rl-agent-autonomy",
-    "commit": "60ca94e82802a4463fd72064f2d7c792e00c77fd",
+    "repo": "https://github.com/luch91/genlayer-RL-agent-autonomy",
+    "commit": "532959468857da3e33082585bd8a2205f7b28f27",
     "sdk": "genlayer-py >=0.2.9",
     "runner_pin": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
-    "generated_at": "2026-08-08T19:09:19.739746+00:00"
+    "generated_at": "2026-08-19T19:43:13.732074+00:00"
   },
   "contract": {
-    "address": "0xC23006cAF6D3b25288F77988592675Bd5439Ed35",
+    "address": "0x71D85CdF6FB3A268AB4B7Fafbba1F643c145Ef26",
     "chain": "studionet",
-    "explorer": "https://explorer-studio.genlayer.com/address/0xC23006cAF6D3b25288F77988592675Bd5439Ed35"
+    "explorer": "https://explorer-studio.genlayer.com/address/0x71D85CdF6FB3A268AB4B7Fafbba1F643c145Ef26"
   },
   "reward": {
     "kind": "llm_comparative",

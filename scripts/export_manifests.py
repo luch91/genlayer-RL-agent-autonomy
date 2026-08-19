@@ -64,7 +64,7 @@ def one_manifest(manifest_id: str) -> dict:
         "schema_version": "1.0",
         "domain": {"id": manifest_id, "name": display_name, "plain_name": plain_name, "plain_blurb": blurb, "world": world},
         "provenance": {
-            "repo": "https://github.com/luch91-org/genlayer-rl-agent-autonomy",
+            "repo": "https://github.com/luch91/genlayer-RL-agent-autonomy",
             "commit": current_commit(),
             "sdk": "genlayer-py >=0.2.9",
             "runner_pin": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",

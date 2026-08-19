@@ -38,7 +38,17 @@ class FakeClient:
     def read_contract(self, **kwargs):
         self.calls.append(("read", kwargs))
         method = kwargs["function_name"]
-        return self.state if method == "get_state" else self.reward
+        if method == "get_state":
+            return self.state
+        if method == "get_last_reward":
+            return self.reward
+        if method == "get_step_count":
+            return 1
+        if method == "is_terminal":
+            return False
+        if method == "get_problem_definition":
+            return "fixed problem"
+        raise AssertionError(f"unexpected read method: {method}")
 
     def write_contract(self, **kwargs):
         self.calls.append(("write", kwargs))
@@ -60,10 +70,35 @@ def test_genlayer_adapter_reads_writes_and_consumes_reward():
     assert reward == 9.0
     assert done is False
     assert info["transaction_hash"] == "0xtest"
-    assert [call[0] for call in client.calls] == ["read", "write", "wait", "read", "read"]
+    assert [call[0] for call in client.calls] == [
+        "read", "write", "wait", "read", "read", "read", "read", "read"
+    ]
     write = client.calls[1][1]
     assert write["function_name"] == "take_action"
     assert write["args"] == [2]
+    assert info["problem_definition"] == "fixed problem"
+
+
+def test_live_reward_flows_into_q_update():
+    client = FakeClient()
+    env = GenLayerEnv(client, account="alice", address="0xabc", domain=get_domain("crisis-negotiator"))
+    agent = QLearningAgent((0, 1, 2), alpha=0.5, gamma=0.0, epsilon=0.0)
+    state = env.reset()
+    action = agent.choose_action(state)
+    next_state, reward, done, info = env.step(action)
+    updated = agent.update(state, action, reward, next_state, done)
+    assert reward == 9.0
+    assert updated == 4.5
+    assert agent.q[str(state)][str(action)] == 4.5
+    assert info["source"] == "genlayer"
+
+
+def test_mock_and_contract_problem_definitions_are_explicit():
+    for name in ("crisis-negotiator", "protocol-immunologist", "scientific-heretic", "diplomatic-interpreter"):
+        domain = get_domain(name)
+        assert domain.problem_definition
+        assert "actions 0, 1, 2" in domain.problem_definition
+        assert "episode ends after 8" in domain.problem_definition
 
 
 def test_all_domains_have_an_executable_mock_path():

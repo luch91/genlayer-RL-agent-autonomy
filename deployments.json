@@ -5,19 +5,23 @@
   "contracts": {
     "crisis": {
       "name": "Crisis Negotiator",
-      "address": "0x9d718F8AAb76517D14917483e1c9Cbd6267aDe24"
+      "address": "0x6DF8D7adDc796C9AA3Af4f42478C2D819B569381",
+      "deployment_tx": "0xb36bf1ad2fa1e56e88b174113c36b8f041d4ae90f747a37f14aee49a308f8cc1"
     },
     "immunologist": {
       "name": "Protocol Immunologist",
-      "address": "0xC23006cAF6D3b25288F77988592675Bd5439Ed35"
+      "address": "0x71D85CdF6FB3A268AB4B7Fafbba1F643c145Ef26",
+      "deployment_tx": "0x1c1deb13cb48d7ed4f26cb3cd8781a851c8bf94a384a66ed7863304c265e8140"
     },
     "heretic": {
       "name": "Scientific Heretic",
-      "address": "0x7847A35eA8C3Bb887C20E5B64BF035e99abd4B16"
+      "address": "0xB831B9D4FFEC63B71985F87CEd3aCDCAF5965be8",
+      "deployment_tx": "0xd058f9d988d32335820c0d3d17416d2f8672290453945b721178f51064413a5a"
     },
     "interpreter": {
       "name": "Diplomatic Interpreter",
-      "address": "0xA47132D18B0eD7588426B6234f74d4A15170a4e0"
+      "address": "0x7c87A683c2506EF8772aC314DcfEF7B4AF7c092D",
+      "deployment_tx": "0xd67d98d1dd9ab7619485f934489c3b9b95a99fb212a6af1e755d492457d301d5"
     }
   }
 }

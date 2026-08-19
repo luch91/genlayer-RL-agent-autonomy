@@ -16,6 +16,7 @@ from agent.domains import Domain
 class Environment(Protocol):
     def reset(self, state: int | None = None) -> int: ...
     def observe(self) -> int: ...
+    def problem_definition(self) -> str: ...
     def step(self, action: int) -> tuple[int, float, bool, dict[str, Any]]: ...
 
 
@@ -34,6 +35,9 @@ class MockEnvironment:
     def observe(self) -> int:
         return self.state
 
+    def problem_definition(self) -> str:
+        return self.domain.problem_definition
+
     def step(self, action: int) -> tuple[int, float, bool, dict[str, Any]]:
         if action not in self.domain.actions:
             raise ValueError(f"invalid action {action}")
@@ -44,7 +48,12 @@ class MockEnvironment:
         self.state = (self.state + action + 1) % len(self.domain.states)
         self.steps += 1
         done = self.steps >= self.max_steps
-        return self.state, reward, done, {"source": "mock", "action": action}
+        return self.state, reward, done, {
+            "source": "mock",
+            "action": action,
+            "step_count": self.steps,
+            "problem_definition": self.problem_definition(),
+        }
 
 
 class GenLayerEnv:
@@ -70,6 +79,14 @@ class GenLayerEnv:
         )
         return int(value)
 
+    def problem_definition(self) -> str:
+        value = self.client.read_contract(
+            address=self.address,
+            function_name=self.domain.problem_method,
+            args=[],
+        )
+        return str(value)
+
     def step(self, action: int) -> tuple[int, float, bool, dict[str, Any]]:
         if action not in self.domain.actions:
             raise ValueError(f"invalid action {action}")
@@ -91,8 +108,20 @@ class GenLayerEnv:
             args=[],
         )
         next_state = self.observe()
-        return next_state, float(reward), False, {
+        step_count = int(self.client.read_contract(
+            address=self.address,
+            function_name=self.domain.step_method,
+            args=[],
+        ))
+        done = bool(self.client.read_contract(
+            address=self.address,
+            function_name=self.domain.terminal_method,
+            args=[],
+        ))
+        return next_state, float(reward), done, {
             "source": "genlayer",
             "transaction_hash": tx_hash,
             "receipt": receipt,
+            "step_count": step_count,
+            "problem_definition": self.problem_definition(),
         }

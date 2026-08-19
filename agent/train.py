@@ -25,9 +25,20 @@ def main() -> None:
     else:
         if not args.address:
             parser.error("--address is required with --env genlayer")
+        if args.episodes != 1:
+            parser.error(
+                "live GenLayer training uses one fixed 8-step episode per deployment; "
+                "use --episodes 1 and redeploy for another episode"
+            )
         from genlayer_py import create_account, create_client
         from genlayer_py.chains import studionet
         env = GenLayerEnv(create_client(chain=studionet), create_account(), args.address, domain)
+        onchain_definition = env.problem_definition()
+        if onchain_definition != domain.problem_definition:
+            raise RuntimeError(
+                "contract problem definition does not match the selected domain; "
+                "refusing to train against a different objective"
+            )
     agent = QLearningAgent(domain.actions)
     if args.resume:
         agent.load(args.resume)
