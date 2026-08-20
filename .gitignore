@@ -3,3 +3,11 @@ CLAUDE.md
 .venv/
 __pycache__/
 *.pyc
+
+# Local demo/render outputs (the source, tests, manifests, and documentation are tracked)
+demo-video/
+instrument-panel.gif
+prof-*.png
+qa-opening.png
+render-demo.ps1
+render-professional-demo.ps1
