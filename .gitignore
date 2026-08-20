@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 
 # Local demo/render outputs (the source, tests, manifests, and documentation are tracked)
+DECISIONS.md
 demo-video/
 instrument-panel.gif
 prof-*.png
