@@ -9,10 +9,10 @@
   },
   "provenance": {
     "repo": "https://github.com/luch91/genlayer-RL-agent-autonomy",
-    "commit": "532959468857da3e33082585bd8a2205f7b28f27",
+    "commit": "b5b53a027f061b33447bc7c045d7760588e6f21e",
     "sdk": "genlayer-py >=0.2.9",
     "runner_pin": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
-    "generated_at": "2026-08-19T19:43:13.796791+00:00"
+    "generated_at": "2026-08-20T20:15:35.435396+00:00"
   },
   "contract": {
     "address": "0xB831B9D4FFEC63B71985F87CEd3aCDCAF5965be8",

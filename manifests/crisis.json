@@ -9,10 +9,10 @@
   },
   "provenance": {
     "repo": "https://github.com/luch91/genlayer-RL-agent-autonomy",
-    "commit": "532959468857da3e33082585bd8a2205f7b28f27",
+    "commit": "b5b53a027f061b33447bc7c045d7760588e6f21e",
     "sdk": "genlayer-py >=0.2.9",
     "runner_pin": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
-    "generated_at": "2026-08-19T19:43:13.648540+00:00"
+    "generated_at": "2026-08-20T20:15:33.774533+00:00"
   },
   "contract": {
     "address": "0x6DF8D7adDc796C9AA3Af4f42478C2D819B569381",
@@ -4119,6 +4119,62 @@
                 {
                   "text": "Mock replay only; this step has no on-chain transaction or validator receipt.",
                   "source": "MockEnvironment"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "studionet-verification-2026-08-19",
+      "mode": "live",
+      "label": "Accepted Studionet verification transaction (reward read from contract)",
+      "episodes": [
+        {
+          "i": 1,
+          "steps": [
+            {
+              "i": 2,
+              "action": {
+                "id": "action-0",
+                "label": "action 0"
+              },
+              "state_after": {
+                "bucket": 2,
+                "step": 2
+              },
+              "reward": 0.0,
+              "reward_kind": "llm",
+              "reason": "Reward persisted by the deployed contract after an accepted transaction.",
+              "consensus": {
+                "outcome": "MAJORITY",
+                "validators": [
+                  {
+                    "vote": "agree"
+                  },
+                  {
+                    "vote": "disagree"
+                  },
+                  {
+                    "vote": "disagree"
+                  },
+                  {
+                    "vote": "agree"
+                  },
+                  {
+                    "vote": "agree"
+                  }
+                ]
+              },
+              "tx": {
+                "hash": "0xa0e7c9799b29fa1ea51be5e52846eaf80dd9ffa1663d7f465e49ece48a9be5c6",
+                "explorer": "https://explorer-studio.genlayer.com/tx/0xa0e7c9799b29fa1ea51be5e52846eaf80dd9ffa1663d7f465e49ece48a9be5c6"
+              },
+              "notes": [
+                {
+                  "text": "Accepted Studionet transaction; no leader numeric score or validator model names are claimed.",
+                  "source": "genlayer CLI receipt"
                 }
               ]
             }

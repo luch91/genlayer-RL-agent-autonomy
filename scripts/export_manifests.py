@@ -24,6 +24,41 @@ DOMAIN_META = {
     "interpreter": ("diplomatic-interpreter", "Diplomatic Interpreter", "Cross-community Mediation", "drafts compromises that reduce polarization", "Community mediation"),
 }
 
+LIVE_VERIFICATIONS = {
+    "crisis": {
+        "run_id": "studionet-verification-2026-08-19",
+        "label": "Accepted Studionet verification transaction (reward read from contract)",
+        "step": {
+            "i": 2,
+            "action": {"id": "action-0", "label": "action 0"},
+            "state_after": {"bucket": 2, "step": 2},
+            "reward": 0.0,
+            "reward_kind": "llm",
+            "reason": "Reward persisted by the deployed contract after an accepted transaction.",
+            "consensus": {
+                "outcome": "MAJORITY",
+                "validators": [
+                    {"vote": "agree"},
+                    {"vote": "disagree"},
+                    {"vote": "disagree"},
+                    {"vote": "agree"},
+                    {"vote": "agree"},
+                ],
+            },
+            "tx": {
+                "hash": "0xa0e7c9799b29fa1ea51be5e52846eaf80dd9ffa1663d7f465e49ece48a9be5c6",
+                "explorer": "https://explorer-studio.genlayer.com/tx/0xa0e7c9799b29fa1ea51be5e52846eaf80dd9ffa1663d7f465e49ece48a9be5c6",
+            },
+            "notes": [
+                {
+                    "text": "Accepted Studionet transaction; no leader numeric score or validator model names are claimed.",
+                    "source": "genlayer CLI receipt",
+                }
+            ],
+        },
+    }
+}
+
 
 def current_commit() -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
@@ -60,6 +95,21 @@ def one_manifest(manifest_id: str) -> dict:
             break
 
     deployment = DEPLOYMENTS["contracts"][manifest_id]
+    runs = [{
+        "id": "mock-replay",
+        "mode": "mock",
+        "label": "Local deterministic mock replay (no live receipts)",
+        "episodes": [{"i": 1, "steps": steps}],
+    }]
+    live = LIVE_VERIFICATIONS.get(manifest_id)
+    if live:
+        runs.append({
+            "id": live["run_id"],
+            "mode": "live",
+            "label": live["label"],
+            "episodes": [{"i": 1, "steps": [live["step"]]}],
+        })
+
     return {
         "schema_version": "1.0",
         "domain": {"id": manifest_id, "name": display_name, "plain_name": plain_name, "plain_blurb": blurb, "world": world},
@@ -86,12 +136,7 @@ def one_manifest(manifest_id: str) -> dict:
             "episodes": [{"i": i + 1, "reward": round(reward / env.max_steps, 3)} for i, reward in enumerate(rewards)],
             "epsilon": [{"i": i + 1, "value": round(max(agent.min_epsilon, 1.0 * agent.epsilon_decay ** (i + 1)), 6)} for i in range(500)],
         },
-        "runs": [{
-            "id": "mock-replay",
-            "mode": "mock",
-            "label": "Local deterministic mock replay (no live receipts)",
-            "episodes": [{"i": 1, "steps": steps}],
-        }],
+        "runs": runs,
     }
 
 
