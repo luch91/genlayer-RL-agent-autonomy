@@ -12,7 +12,9 @@ Framed honestly: this is subjective-reward RL on-chain (RLAIF, judged by validat
 
 ## Live dashboard
 
-All four agents are visualized in one place: **[the GenLayer RL Demo Suite](https://luch91.github.io/genlayer-rl-demo-suite/)**. It is a pure reader of each agent's published `manifest.json` - watch the reward climb over training, step through a recorded episode, read the on-chain judge's verdict for each step, inspect why the agent chose each action, and read the deployed contract's live state. Source and setup: [`genlayer-rl-demo-suite`](https://github.com/luch91/genlayer-rl-demo-suite).
+All four agents are visualized in one place: **[the GenLayer RL Demo Suite](https://luch91.github.io/genlayer-rl-demo-suite/)**. It is a pure reader of each agent's published `manifest.json` - watch the reward climb over training, step through a recorded episode, read the on-chain judge's verdict for each recorded live step, inspect why the agent chose each action, and read the deployed contract's live state. Source and setup: [`genlayer-rl-demo-suite`](https://github.com/luch91/genlayer-rl-demo-suite).
+
+Direct dashboard links: [crisis live state](https://luch91.github.io/genlayer-rl-demo-suite/crisis/live/), [crisis verification receipt](https://luch91.github.io/genlayer-rl-demo-suite/crisis/verification/), and [crisis contract data](https://luch91.github.io/genlayer-rl-demo-suite/data/crisis.json).
 
 ![The instrument panel replaying a trained crisis-response episode: the world state, the on-chain judge score, the step timeline, and the policy inspector all advance together, step by step.](https://raw.githubusercontent.com/luch91/genlayer-rl-demo-suite/main/docs/instrument-panel.gif)
 
